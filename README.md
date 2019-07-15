@@ -4,7 +4,7 @@ The drone capture processing pipeline for agricultural science.
 
 ## Overview
 
-The Drone Processing Pipeline code is a part of the [TERRA REF](https://github.com/terraref/drone-pipeline/tree/master) project. 
+The Drone Processing Pipeline code is a part of the [TERRA REF](https://github.com/terraref/drone-pipeline/tree/master) GitHub project. 
 The purpose of the Drone Processing Pipeline is to simplify the process of transforming your drone captured data into a useful format.
 
 ## Other links
