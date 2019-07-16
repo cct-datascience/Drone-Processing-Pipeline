@@ -22,7 +22,21 @@
         }
         .body_offset {
             position: absolute;
-            top: 80px;
+            top: 90px;
+        }
+        .body_container {
+            display: flex;
+        }
+        .body_content {
+            padding-top: 5px;
+        }
+        .body_left_side {
+            width: 150px;
+            height: 500px;
+            border-right: 1px solid black;
+        }
+        .body_center {
+            padding-left: 10px;
         }
     </style>
 </head>
@@ -34,9 +48,18 @@
             <h1>Drone Processing Pipeline</h1>
         </div>
     </div>
-    <div class="body_offset">
-        <h1>Hi</h1>
+    <div class="body_offset body_container">
+        <div class="body_left_side">
+            <div class="body_content">Side bar</div>
+        </div>
+        <div class="body_center">
+            <div class="body_content"> HI</div>
+        </div>
     </div>
 
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 </body>
 </html>
