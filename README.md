@@ -1,4 +1,5 @@
-![](/resources/drone-pipeline.png)
+<img src="./resources/drone-pipeline.png" width="100" />
+
 # Drone Processing Pipeline
 
 The drone capture processing pipeline for agricultural science.
