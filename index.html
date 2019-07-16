@@ -2,10 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <style>
+        .site_header {
+            position: absolute;
+            display: flex;
+            top: 0px;
+            left: 0px;
+            width:100%;
+            height: 90px;
+            box-shadow: 0px 3px 2px #bbbbbb;
+        }
+        .site_logo {
+            width: 80px;
+            padding: 5px 5px 5px 5px;
+        }
+        .site_name {
+            height: 90px;
+            width: 2000px;
+        }
+        .body_offset {
+            position: absolute;
+            top: 80px;
+        }
+    </style>
 </head>
 
 <body>
-<h1>Hi</h1>
+    <div class="site_header">
+        <img class="site_logo" src="https://github.com/az-digitalag/Drone-Processing-Pipeline/raw/07b1edc34a1faea501c80f583beb07f9d6b290bb/resources/drone-pipeline.png" alt="Drone Processing Pipeline logo"/>
+        <div class="site_name">
+            <h1>Drone Processing Pipeline</h1>
+        </div>
+    </div>
+    <div class="body_offset">
+        <h1>Hi</h1>
+    </div>
 
 </body>
 </html>
