@@ -1,3 +1,4 @@
+![](/resources/drone-pipeline.png)
 # Drone Processing Pipeline
 
 The drone capture processing pipeline for agricultural science.
