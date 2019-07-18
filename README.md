@@ -14,7 +14,7 @@ Examples of non-technical information are release notes, schedule information, a
 
 ## Wiki site
 
-Our [OSF Wiki site](https://osf.io/xdkcy/wiki/home/) is used as an archive for our notices and other static information.
+Our [OSF Wiki](https://osf.io/xdkcy/wiki/home/) is used as an archive for our notices and other static information.
 
 ## Documentation links
 
