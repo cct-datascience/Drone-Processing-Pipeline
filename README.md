@@ -1,6 +1,5 @@
-<img src="./resources/drone-pipeline.png" width="100" />
-
 # Drone Processing Pipeline
+<img src="./resources/drone-pipeline.png" width="100" />
 
 The processing pipeline of drone captured data for agricultural science.
 The purpose of the Drone Processing Pipeline is to simplify the process of transforming your drone captured data into a format that you find useful.
