@@ -38,6 +38,21 @@
         .body_center {
             padding-left: 10px;
         }
+        .menu_group {
+        }
+        .menu_indicator {
+            flex: 1;
+            min-width: 1em;
+            color: blue;
+            font-size: larger;
+        }
+        .menu_text {
+            width: 100%;
+            height: 100%;
+        }
+        .menu_item {
+            padding-left: 1.5em;
+        }
     </style>
 </head>
 
@@ -50,7 +65,9 @@
     </div>
     <div class="body_offset body_container">
         <div class="body_left_side">
-            <div class="body_content">Side bar</div>
+            <div class="body_content">
+                <div id="menus"></div>
+            </div>
         </div>
         <div class="body_center">
             <div class="body_content"> HI</div>
@@ -61,5 +78,80 @@
     <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
+
+    <script type="text/babel">
+'use strict'
+
+/* This module assumes React has been loaded */
+
+/*
+ * This class presents a collapsable menu
+ */
+class DPPMenu extends React.Component {
+    constructor(props) {
+        super(props);
+        let css_class = props.css_class || "menu_group";
+        let css_indicator = props.css_indicator_class || "menu_indicator";
+        let css_menu = props.css_group_text_class || "menu_text"
+        let menu_name = props.name || "menu group";
+        let is_opened = props.open || false;
+        let menu_items = props.items || [];
+
+        this.changeOpenState = this.changeOpenState.bind(this);
+
+        this.state = {"css_class": css_class,
+                      "css_indicator": css_indicator,
+                      "css_menu_text": css_menu,
+                      "menu_name": menu_name,
+                      "opened": is_opened, 
+                      "items": menu_items
+                     };
+    }
+
+    changeOpenState() {
+        this.setState({"opened": !this.state.opened});
+    }
+
+    _emptyDiv() {
+        return (<div/>);
+    }
+
+    _generateItems() {
+        if (this.state.items.size <= 0) 
+            return this._emptyDiv();
+
+        return (this.state.items.map((item) => {
+                let item_css = item.css_class || "menu_item";
+                let item_name = item.name || "menu item";
+                let handler = item.click;
+                return (<div className={item_css} key={item_name} onClick={handler}>{item_name}</div>)
+            })
+        );
+    }
+
+    render() {
+        let open_indicator = (this.state.opened && "-") || "+";
+        let menu_items = (!this.state.opened && this._emptyDiv()) || this._generateItems();
+        return (
+            <div className={this.state.css_class}>
+                <div style={{display:'flex',flexDirection:'row',alignItems:'center'}} onClick={this.changeOpenState}>
+                    <div className={this.state.css_indicator}>{open_indicator}</div>
+                    <div className={this.state.css_menu_text}>{this.state.menu_name}</div>
+                </div>
+                {menu_items}
+            </div>
+        );
+    }
+}
+function noticeMenuClick(notice_id) {
+    
+}
+ReactDOM.render(
+  <DPPMenu name="Notices" items={[{name:'one', click: ()=>noticeMenuClick("One")},
+                                  {name:'two', click: ()=>noticeMenuClick("Two")}]}/>,
+  document.getElementById('menus')
+);
+    </script>
 </body>
 </html>
