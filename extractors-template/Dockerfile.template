@@ -1,5 +1,5 @@
 FROM terraref/terrautils:1.4
-MAINTAINER Chris Schnaufer <schnaufer@email.arizona.edu>
+MAINTAINER Someone <someone@example.com>
 
 # Install any users
 RUN useradd -u 49044 extractor \
@@ -17,12 +17,11 @@ RUN pip install --upgrade pip
 
 RUN pip install --upgrade numpy && \
     pip install --upgrade dbfread && \
-    pip install gdal  && \
-    pip install --upgrade --ignore-installed enum34 terrautils && \
-    pip install --upgrade terraref-stereo-rgb
+    pip install --upgrade gdal  && \
+    pip install --upgrade --ignore-installed enum34 terrautils
 
 # command to run when starting docker
-COPY entrypoint.sh extractor_info.json *.py /home/extractor/
+COPY entrypoint.sh extractor_info.json extractor.py extractor_base.py configuration.py /home/extractor/
 
 USER extractor
 ENTRYPOINT ["/home/extractor/entrypoint.sh"]
@@ -34,5 +33,5 @@ CMD ["extractor"]
 # executed by entrypoint.sh
 ENV RABBITMQ_EXCHANGE="terra" \
     RABBITMQ_VHOST="%2F" \
-    RABBITMQ_QUEUE="terra.dronepipeline.canopycover" \
-    MAIN_SCRIPT="drone_canopycover.py"
+    RABBITMQ_QUEUE="terra.dronepipeline.extractor" \
+    MAIN_SCRIPT="extractor_base.py"
