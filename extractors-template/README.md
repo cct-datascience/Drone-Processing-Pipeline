@@ -117,7 +117,7 @@ Alternatively, with the command shell, you might need to specify the python vers
 If the script encounters a problem, an error is reported.
 Correct the caause of the reported error and try running the command again.
 
-Once you are satisfied with the results you can delete the *do_config.py*.
+Once you are satisfied with the results you can delete the *do_config.py\** files.
 
 ## Adding Your Algorithm <a name="algorithm"/>
 
