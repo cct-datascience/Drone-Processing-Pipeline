@@ -9,16 +9,20 @@ RUN useradd -u 49044 extractor \
 RUN chown -R extractor /home/extractor \
     && chgrp -R extractor /home/extractor 
 
-# install and upgrade packages
+# install and upgrade OS packages
 RUN apt install -y imagemagick gdal-bin libgdal-dev
 
-# install and upgrade packages
+# install and upgrade pip and other python packages
 RUN pip install --upgrade pip 
 
 RUN pip install --upgrade numpy && \
     pip install --upgrade dbfread && \
     pip install --upgrade gdal  && \
     pip install --upgrade --ignore-installed enum34 terrautils
+
+# ADD ADDITIONAL INSTALLATION STEPS HERE
+
+# END ADDITIONAL INSTALLATION
 
 # command to run when starting docker
 COPY entrypoint.sh extractor_info.json extractor.py extractor_base.py configuration.py /home/extractor/
