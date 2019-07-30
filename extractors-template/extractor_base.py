@@ -50,8 +50,8 @@ def __do_initialization():
     import configuration
 
     try:
-        method_name = configuration.METHOD_NAME
-    except:
+        method_name = configuration.METHOD_NAME     # pylint: disable=no-member
+    except: # pylint: disable=bare-except
         method_name = None
 
     init_extraction(configuration.EXTRACTOR_NAME, method_name)
@@ -63,7 +63,7 @@ def init_extraction(name, method_name):
     """Initializes the extractor environment
     Args:
        name(str): The name of the extractor
-       method_name(str): The name of the scientific method to reference
+       method_name(str): Optional name of the scientific method to reference
     Return:
         N/A
     Exceptions:
@@ -72,6 +72,7 @@ def init_extraction(name, method_name):
     # We need to add other sensor types for OpenDroneMap generated files before anything happens
     # The Sensor() class initialization defaults the sensor dictionary and we can't override
     # without many code changes
+    # pylint: disable=global-statement
     global EXTRACTOR_NAME
     global SENSOR_NAME
     global TRAIT_NAME_ARRAY_VALUE
@@ -131,7 +132,6 @@ def get_traits_table():
 
     return (fields, traits)
 
-# TODO: Keep these in terrautils.bety instead
 def generate_traits_list(traits):
     """Returns an array of trait values
 
@@ -399,7 +399,7 @@ class PlotExtractor(TerrarefExtractor):
         return CheckMessage.ignore
 
     # Entry point for processing messages
-    # pylint: disable=too-many-arguments, too-many-branches, too-many-statements, too-many-locals
+    # pylint: disable=too-many-arguments, too-many-branches, too-many-statements, too-many-locals, attribute-defined-outside-init
     def process_message(self, connector, host, secret_key, resource, parameters):
         """Performs plot level image extraction
 
@@ -427,10 +427,8 @@ class PlotExtractor(TerrarefExtractor):
         config_specie = None
 
         # Find the files we're interested in
-        # pylint: disable=line-too-long
-        (shapefile, shxfile, dbffile, imagefiles) = self.find_shape_image_files(resource['local_paths'],
-                                                                                resource['triggering_file'])
-        # pylint: enable=line-too-long
+        (shapefile, shxfile, dbffile, imagefiles) = \
+                   self.find_shape_image_files(resource['local_paths'], resource['triggering_file'])
         if shapefile is None:
             self.log_skip(resource, "No shapefile found")
             return
@@ -525,17 +523,16 @@ class PlotExtractor(TerrarefExtractor):
                 # Lookup a plot name field to use
                 if plot_name_idx is None:
                     for one_name in column_names:
-                        # pylint: disable=line-too-long
                         if one_name == "observationUnitName":
                             plot_name_idx = one_name
                             break
-                        elif (one_name.find('plot') >= 0) and ((one_name.find('name') >= 0) or one_name.find('id')):
+                        elif (one_name.find('plot') >= 0) and ((one_name.find('name') >= 0) or \
+                                                                            one_name.find('id')):
                             plot_name_idx = one_name
                             break
                         elif one_name == 'id':
                             plot_name_idx = one_name
                             break
-                        # pylint: enable=line-too-long
                 if plot_name_idx is None:
                     ValueError(resource, "Shapefile data does not have a plot name field '" +
                                os.path.basename(dbffile) + "'")
@@ -698,10 +695,9 @@ class PlotExtractor(TerrarefExtractor):
                                                 self.extractor_info['name'])
                 clowder_dataset.upload_metadata(connector, host, secret_key, dataset_id,
                                                 extractor_md)
-            # pylint: disable=broad-except
-            except Exception as ex:
+
+            except Exception as ex: # pylint: disable=broad-except
                 self.log_error(resource, "Exception updating dataset metadata: " + str(ex))
-            # pylint: enable=broad-except
         finally:
             # Signal end of processing message and restore changed variables. Be sure to restore
             # changed variables above with early returns
@@ -712,6 +708,5 @@ class PlotExtractor(TerrarefExtractor):
             self.end_message(resource)
 
 if __name__ == "__main__":
-    # pylint: disable=invalid-name
-    extractor = PlotExtractor()
+    extractor = PlotExtractor()     # pylint: disable=invalid-name
     extractor.start()

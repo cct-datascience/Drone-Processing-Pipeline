@@ -4,6 +4,7 @@
 """
 import copy
 import json
+import re
 import configuration
 
 # The extractor information template to use
@@ -79,7 +80,7 @@ def generate_dockerfile():
         raise RuntimeError("One or more configuration fields aren't defined in configuration.py: " \
                            + ", ".join(missing))
 
-    new_name = configuration.EXTRACTOR_NAME.trim().replace(' ', '_').replace('\t', '_').\
+    new_name = configuration.EXTRACTOR_NAME.strip().replace(' ', '_').replace('\t', '_').\
                                             replace('\n', '_').replace('\r', '_')
     extractor_name = new_name.tolower()
 
@@ -89,10 +90,10 @@ def generate_dockerfile():
             if line.startswith("MAINTAINER"):
                 out_file.write("MAINTAINER {0} <{1}>".format(configuration.AUTHOR_NAME, \
                                configuration.AUTHOR_EMAIL))
-            elif line.trim().startswith("RABBITMQ_QUEUE"):
+            elif line.lstrip().startswith("RABBITMQ_QUEUE"):
                 white_space = re.match(r"\s*", line).group()
                 out_file.write("{0}RABBITMQ_QUEUE=\"terra.dronepipeline.{1}\" \\". \
-                         format(white_space, configuration.EXTRACTOR_NAME))
+                         format(white_space, extractor_name))
             else:
                 out_file.write(line)
 
