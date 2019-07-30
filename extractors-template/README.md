@@ -119,6 +119,8 @@ Correct the caause of the reported error and try running the command again.
 
 Once you are satisfied with the results you can delete the *do_config.py\** files.
 
+This is another good point to save your files to source control.
+
 ## Adding Your Algorithm <a name="algorithm"/>
 
 Your algorithm will reside in a separate file named `extractor.py`, in a function named `calculate`.
