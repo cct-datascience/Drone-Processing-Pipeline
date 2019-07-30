@@ -49,7 +49,9 @@ It's recommended that you perform the following clean-up steps:
 3. Move the contents of the *extractor-template* folder to the current folder (should be the one named "extractor-ruby" in this example)
 4. Finally, delete the now-empty "extractor-template" folder
 
-At this time you should check your changes into source control.
+At this time you may want to check your changes into source control.
+Note that after running the [Generate Files](#generate) step we recommend deleting a file.
+Depending upon your comfort level with the source control you use, you may want to wait until after that step to check files in.
 
 ## Configuration <a name="configuration"/>
 
@@ -96,7 +98,7 @@ It is used in conjunction with the AUTHOR_NAME field
 
 Specify the full URL to your code repository.
 
-### Generate files
+### Generate files <a name="generate"/>
 
 There are two principal files that are configuration based.
 The `do_config.py` script generates these files for you based upon the values entered into the [configuration.py](#configuration_py) file.
@@ -114,6 +116,8 @@ Alternatively, with the command shell, you might need to specify the python vers
 
 If the script encounters a problem, an error is reported.
 Correct the caause of the reported error and try running the command again.
+
+Once you are satisfied with the results you can delete the *do_config.py*.
 
 ## Adding Your Algorithm <a name="algorithm"/>
 
