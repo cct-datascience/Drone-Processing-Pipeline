@@ -17,7 +17,7 @@ RUN pip install --upgrade pip
 
 RUN pip install --upgrade numpy && \
     pip install --upgrade dbfread && \
-    pip install --upgrade gdal  && \
+    pip install gdal  && \
     pip install --upgrade --ignore-installed enum34 terrautils
 
 # ADD ADDITIONAL INSTALLATION STEPS HERE

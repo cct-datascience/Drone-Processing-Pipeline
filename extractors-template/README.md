@@ -1,4 +1,5 @@
 # Extractor Template
+<img src="./resources/drone-pipeline.png" width="100" />
 
 This code is intended to be used as a template for writing additional plot-level, RGB-based, phenomic extractors for the Drone Processing Pipeline.
 
@@ -15,9 +16,9 @@ This name is used for illustrative purposes only and you should use your own ext
 The following steps are needed when using this template. Note that all the sections referenced can be found below.
 
 1. Make a copy of this repository as outlined in the [Getting Started](#starting) section
-2. Fill in the configuration.py file and create needed files as described in the [Configuration](#configuration) section
+2. Fill in the configuration.py file and create the needed files as described in the [Configuration](#configuration) section
 3. Fill in the calculate() function as outlined in the [Adding Your Algorithm](#algorithm) section 
-4. Create your Docker image and make it available as described in the [Making a Docker Image](#docker) section
+4. Create your Docker image and make it available as outined in the [Making a Docker Image](#docker) section
 
 ## Getting Started <a name="starting"/>
 
@@ -25,6 +26,7 @@ Before you start, make sure to have your own respoitory in which you can make yo
 
 At this point there are two main approaches that can be taken; clone or submodule the template code.
 Another option is to download a .zip of the repository and unzip it into your project; we will not be covering this approach.
+If you are using [GitHub](https://github.com) you can clone the [repository](https://github.com/az-digitalag/Drone-Processing-Pipeline.git) as a [template](https://help.github.com/en/articles/creating-a-repository-from-a-template).
 
 **Clone**
 The advantage to cloning is that you have a stable copy of the code to change as you want.
@@ -34,12 +36,18 @@ The disadvantage of cloning is that when the template gets updated you will need
 The advantage of using a submodule is that it's easy to update to the latest template code through a single command.
 The disadvantage of using a submodule is that the file system layout of a project is more complex.
 
-At this time, only cloning is supported.
-We are hoping to support submodules in the near future.
+At this time, only cloning is documented.
+We are hoping to document submodules in the near future.
 
-To clone the template, open a command window and change to the location of your repository on disk (for example, `cd ~/my_nifty_extractor`).
-Next use git to clone the template project by running `git clone https://github.com/az-digitalag/Drone-Processing-Pipeline.git`.
-Rename the `extractor-template` folder to something meaningful, such as "extractor-ruby".
+To clone the template, open a command window and change to the location of your repository on disk (for example, `cd ~/my-repo`).
+Next use git to clone the template project by running `git clone https://github.com/az-digitalag/Drone-Processing-Pipeline.git extractor-ruby`.
+
+Unfortunately git doesn't allow you to checkout/branch a subfolder.
+It's recommended that you perform the following clean-up steps:
+1. Remove any file from the *extractor-ruby* folder
+2. Remove all folders **except for** the `extractor-template` folder
+3. Move the contents of the *extractor-template* folder to the current folder (should be the one named "extractor-ruby" in this example)
+4. Finally, delete the now-empty "extractor-template" folder
 
 At this time you should check your changes into source control.
 
@@ -49,7 +57,7 @@ There are two steps needed for configuration:
 1. Update the file named "configuration.py" with your values
 2. Run the "do_config.py" script - this requires Python to be installed
 
-### configuration.py <a name="configuration_py"/>
+### Edit configuration.py <a name="configuration_py"/>
 
 There are several fields that need to be filled in with values that are meaningful for your extractor.
 

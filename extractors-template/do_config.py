@@ -32,7 +32,7 @@ BASE_CONFIG = \
     }
 
 # The template file name for Dockerfile
-DOCKERFILE_TEMPLATE_FILE_NAME = "Dockerfile.tempmlate"
+DOCKERFILE_TEMPLATE_FILE_NAME = "Dockerfile.template"
 
 def generate_info():
     """Generates the extractor_info.json file to the current folder
@@ -65,6 +65,7 @@ def generate_info():
 
     with open("extractor_info.json", "w") as out_file:
         json.dump(config, out_file, indent=4)
+        out_file.write("\n")
 
 def generate_dockerfile():
     """Genertes a Dockerfile file using the configured information
@@ -82,20 +83,20 @@ def generate_dockerfile():
 
     new_name = configuration.EXTRACTOR_NAME.strip().replace(' ', '_').replace('\t', '_').\
                                             replace('\n', '_').replace('\r', '_')
-    extractor_name = new_name.tolower()
+    extractor_name = new_name.lower()
 
     template = [line.rstrip('\n') for line in open(DOCKERFILE_TEMPLATE_FILE_NAME, "r")]
     with open("Dockerfile", "w") as out_file:
         for line in template:
             if line.startswith("MAINTAINER"):
-                out_file.write("MAINTAINER {0} <{1}>".format(configuration.AUTHOR_NAME, \
+                out_file.write("MAINTAINER {0} <{1}>\n".format(configuration.AUTHOR_NAME, \
                                configuration.AUTHOR_EMAIL))
             elif line.lstrip().startswith("RABBITMQ_QUEUE"):
                 white_space = re.match(r"\s*", line).group()
-                out_file.write("{0}RABBITMQ_QUEUE=\"terra.dronepipeline.{1}\" \\". \
+                out_file.write("{0}RABBITMQ_QUEUE=\"terra.dronepipeline.{1}\" \\\n". \
                          format(white_space, extractor_name))
             else:
-                out_file.write(line)
+                out_file.write("{0}\n".format(line))
 
 # Make the call to generate the file
 if __name__ == "__main__":
