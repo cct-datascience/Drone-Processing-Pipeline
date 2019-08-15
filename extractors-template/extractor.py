@@ -9,5 +9,5 @@ def calculate(pxarray):
         pxarray(numpy array): RGB pixel data at the plot level
     Returns:
     """
-    # Throw a not implemented exception
-    raise NotImplementedError("Not implemented yet")
+    # Replace this following line with your algorithm
+    return 0.0
