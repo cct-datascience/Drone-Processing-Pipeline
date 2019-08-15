@@ -1,5 +1,5 @@
 # Extractor Template
-<img src="./resources/drone-pipeline.png" width="100" />
+<img src="../resources/drone-pipeline.png" width="100" />
 
 This code is intended to be used as a template for writing additional plot-level, RGB-based, phenomic extractors for the Drone Processing Pipeline.
 
