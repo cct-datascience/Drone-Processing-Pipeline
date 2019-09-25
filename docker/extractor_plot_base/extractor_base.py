@@ -116,8 +116,6 @@ def init_extraction(name, method_name):
 def __do_initialization():
     """ Function to kick off initialization of this module by another script.
     """
-    import configuration
-
     if hasattr(configuration, "METHOD_NAME"):
         method_name = getattr(configuration, "METHOD_NAME")
     else:
