@@ -27,7 +27,7 @@ from terrautils.metadata import prepare_pipeline_metadata
 from terrautils.betydb import get_bety_key, get_bety_api
 from terrautils.geostreams import create_datapoint_with_dependencies
 
-import extractor
+from extractor import calculate
 import configuration
 
 # The name of the extractor to use
@@ -85,12 +85,16 @@ def init_extraction(name, method_name):
 
     EXTRACTOR_NAME = name
 
-    new_name = name.trim().replace(' ', '_').replace('\t', '_').replace('\n', '_').\
+    new_name = name.strip().replace(' ', '_').replace('\t', '_').replace('\n', '_').\
                            replace('\r', '_')
-    SENSOR_NAME = new_name.tolower()
+    SENSOR_NAME = new_name.lower()
 
     TRAIT_NAME_ARRAY_VALUE[0] = SENSOR_NAME
 
+    # Set up the values for the trait name map
+    TRAIT_NAME_MAP['citation_author'] = configuration.CITATION_AUTHOR
+    TRAIT_NAME_MAP['citation_title'] = configuration.CITATION_TITLE
+    TRAIT_NAME_MAP['citation_year'] = configuration.CITATION_YEAR
     if method_name:
         TRAIT_NAME_MAP['method_name'] = method_name
 
@@ -112,17 +116,12 @@ def init_extraction(name, method_name):
 def __do_initialization():
     """ Function to kick off initialization of this module by another script.
     """
-    import configuration
-
-    try:
-        method_name = configuration.METHOD_NAME     # pylint: disable=no-member
-    except: # pylint: disable=bare-except
+    if hasattr(configuration, "METHOD_NAME"):
+        method_name = getattr(configuration, "METHOD_NAME")
+    else:
         method_name = None
 
     init_extraction(configuration.EXTRACTOR_NAME, method_name)
-
-# Call our "do the initialization" function
-__do_initialization()
 
 def _get_plot_name(name):
     """Looks in the parameter and returns a plot name.
@@ -259,7 +258,7 @@ def get_bety_fields():
     global FIELD_NAME_LIST
 
     return ('local_datetime', 'access_level', 'species', 'site', 'citation_author', 'citation_year',
-            'citation_title', 'method') + FIELD_NAME_LIST
+            'citation_title', 'method') + tuple(FIELD_NAME_LIST)
 
 def get_geo_fields():
     """Returns the supported field names as a list
@@ -362,7 +361,7 @@ class PlotExtractor(TerrarefExtractor):
 
         # Confirm that setup has happened
         if EXTRACTOR_NAME is None:
-            raise RuntimeError("Please call init_extraction(name) before creating an instance " + \
+            raise RuntimeError("Please call the init_extraction function before creating an instance " + \
                                "of the extractor class")
 
         # parse command line and load default logging configuration
@@ -595,9 +594,14 @@ class PlotExtractor(TerrarefExtractor):
         citation_auth_override, citation_title_override, citation_year_override = None, None, None
         config_specie = None
 
-        store_in_geostreams = True
-        store_in_betydb = True
-        create_csv_files = True
+        # Intialize data writing overrides. We have some reverse logic here due to the intent of
+        # the variables
+        store_in_geostreams = True if not hasattr(configuration, "NEVER_WRITE_GEOSTREAMS") \
+                                            else not getattr(configuration, "NEVER_WRITE_GEOSTREAMS")
+        store_in_betydb = True if not hasattr(configuration, "NEVER_WRITE_BETYDB") \
+                                            else not getattr(configuration, "NEVER_WRITE_BETYDB")
+        create_csv_files = True if not hasattr(configuration, "NEVER_WRITE_CSV") \
+                                            else not getattr(configuration, "NEVER_WRITE_CSV")
         out_geo = None
         out_csv = None
 
@@ -709,7 +713,7 @@ class PlotExtractor(TerrarefExtractor):
                     centroid = imagefiles[filename]["bounds"].Centroid()
                     plot_name = _get_plot_name([resource['dataset_info']['name'], dataset_name])
 
-                    calc_value = extractor.calculate(np.rollaxis(clip_pix, 0, 3))
+                    calc_value = calculate(np.rollaxis(clip_pix, 0, 3))
 
                     # Convert to something iterable that's in the correct order
                     if isinstance(calc_value, set):
@@ -727,7 +731,7 @@ class PlotExtractor(TerrarefExtractor):
                         values = [calc_value]
 
                     # Sanity check our values
-                    len_calc_value = len(calc_value)
+                    len_calc_value = len(values)
                     if not len_calc_value == len_field_value:
                         raise RuntimeError("Incorrect number of values returned. Expected " + str(len_field_value) +
                                            " and received " + str(len_calc_value))
@@ -820,5 +824,8 @@ class PlotExtractor(TerrarefExtractor):
             self.end_message(resource)
 
 if __name__ == "__main__":
+    # Call our "do the initialization" function
+    __do_initialization()
+
     extractor = PlotExtractor()     # pylint: disable=invalid-name
     extractor.start()
