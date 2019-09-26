@@ -589,6 +589,8 @@ def process_files(germplasm_name, experiment_name, timestamp, plot_name, images_
                             values.append(calc_value[key])
                 elif not isinstance(calc_value, (list, tuple)):
                     values = [calc_value]
+                else:
+                    values = calc_value
 
                 # Sanity check our values
                 len_calc_value = len(values)
