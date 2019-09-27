@@ -10,14 +10,15 @@ import random
 import time
 import csv
 import requests
-import osr
 import numpy as np
-import gdal
 
 from osgeo import ogr
 
 import pyclowder.datasets as clowder_dataset
 from pyclowder.utils import CheckMessage
+
+import gdal
+import osr
 
 from terrautils.extractors import TerrarefExtractor, build_metadata, timestamp_to_terraref, \
         file_filtered_in, terraref_timestamp_to_iso
@@ -729,6 +730,8 @@ class PlotExtractor(TerrarefExtractor):
                                 values.append(calc_value[key])
                     elif not isinstance(calc_value, (list, tuple)):
                         values = [calc_value]
+                    else:
+                        values = calc_value
 
                     # Sanity check our values
                     len_calc_value = len(values)
